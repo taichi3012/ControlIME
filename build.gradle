@@ -53,6 +53,15 @@ processResources {
   }
 }
 
+jar {
+  manifest {
+    attributes([
+      "FMLCorePluginContainsFMLMod": true,
+      "FMLCorePlugin": "com.github.taichi3012.controlime.core.ControlIMECorePlugin"
+    ])
+  }
+}
+
 runClient {
   outputs.upToDateWhen { false }
 }
