@@ -1,7 +1,6 @@
 package com.github.taichi3012.controlime;
 
 import com.sun.jna.platform.win32.User32;
-import com.sun.jna.ptr.IntByReference;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,10 +15,11 @@ import org.lwjgl.opengl.Display;
 import static com.sun.jna.platform.win32.WinDef.*;
 import static com.github.taichi3012.controlime.IMM32.*;
 
-@Mod(modid = ControlIME.MOD_ID, useMetadata = true, clientSideOnly = true)
+@Mod(modid = ControlIME.MOD_ID, version = ControlIME.VERSION, useMetadata = true, clientSideOnly = true)
 public class ControlIME {
 
   public static final String MOD_ID = "controlime";
+  public static final String VERSION = "1.1.0";
   public static Logger logger;
 
   @EventHandler
