@@ -1,6 +1,8 @@
 package com.github.taichi3012.controlime;
 
-import com.sun.jna.platform.win32.User32;
+import java.lang.reflect.Method;
+
+import com.sun.jna.Pointer;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -10,7 +12,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.opengl.Display;
 
 import static com.sun.jna.platform.win32.WinDef.*;
 import static com.github.taichi3012.controlime.IMM32.*;
@@ -46,7 +47,15 @@ public class ControlIME {
   }
 
   public static HWND getHWND() {
-    return User32.INSTANCE.FindWindow(null, Display.getTitle());
+    try {
+      Class<?> clazz = Class.forName("org.lwjgl.WindowsSysImplementation");
+      Method getHwnd_method = clazz.getDeclaredMethod("getHwnd");
+      getHwnd_method.setAccessible(true);
+      long p = (Long) getHwnd_method.invoke(null);
+      return new HWND(new Pointer(p));
+    } catch (ReflectiveOperationException e) {
+      return null;
+    }
   }
 
 }
