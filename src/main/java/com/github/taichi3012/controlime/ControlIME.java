@@ -3,6 +3,7 @@ package com.github.taichi3012.controlime;
 import java.lang.reflect.Method;
 
 import com.sun.jna.Pointer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiScreenBook;
 import net.minecraft.client.gui.inventory.GuiEditSign;
 import net.minecraftforge.client.event.GuiOpenEvent;
@@ -37,9 +38,10 @@ public class ControlIME {
 
   @SubscribeEvent
   public void onGuiOpen(GuiOpenEvent event) {
-    if (event.gui == null) {
+    GuiScreen gui = event.gui;
+    if (gui == null) {
       disableIME();
-    } else if (event.gui instanceof GuiEditSign || event.gui instanceof GuiScreenBook) {
+    } else if (gui instanceof GuiEditSign || (gui instanceof GuiScreenBook && ((GuiScreenBook) gui).bookIsUnsigned)) {
       enableIME();
     }
   }
