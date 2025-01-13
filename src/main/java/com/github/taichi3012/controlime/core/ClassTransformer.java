@@ -12,12 +12,13 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import com.github.taichi3012.controlime.core.transformer.EnableIMEInput;
+import com.github.taichi3012.controlime.core.transformer.*;
 
 public class ClassTransformer implements IClassTransformer {
 
   private final Map<String, List<MethodTransformer>> methodTransformers = ImmutableSet.of(
-    new EnableIMEInput()
+    new EnableIMEInput(),
+    new HookGuiTextField.HookSetFocus()
   ).stream().collect(Collectors.groupingBy(mt -> mt.className));
 
   @Override
