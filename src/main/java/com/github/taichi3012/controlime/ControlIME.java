@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.Logger;
 
-import static com.sun.jna.platform.win32.WinDef.*;
 import static com.github.taichi3012.controlime.IMM32.*;
+import static com.sun.jna.platform.win32.WinDef.*;
 
 @Mod(modid = ControlIME.MOD_ID, version = ControlIME.VERSION, useMetadata = true, clientSideOnly = true)
 public class ControlIME {
@@ -35,14 +35,10 @@ public class ControlIME {
 
   @SubscribeEvent
   public void onGuiOpen(GuiOpenEvent event) {
-    HWND hWND = getHWND();
     if (event.gui == null) {
-      ImmAssociateContext(hWND, null);
+      disableIME();
     } else if (Minecraft.getMinecraft().currentScreen == null){
-      ImmAssociateContextEx(hWND, null, new DWORD(16L));
-      HIMC hIMC = ImmGetContext(hWND);
-      ImmSetConversionStatus(hIMC, new DWORD(0L), new DWORD(8L));
-      ImmReleaseContext(hWND, hIMC);
+      enableIME();
     }
   }
 
@@ -56,6 +52,18 @@ public class ControlIME {
     } catch (ReflectiveOperationException e) {
       return null;
     }
+  }
+
+  public static void enableIME() {
+    HWND hWND = getHWND();
+    ImmAssociateContextEx(hWND, null, new DWORD(16L));
+    HIMC hIMC = ImmGetContext(hWND);
+    ImmSetConversionStatus(hIMC, new DWORD(0L), new DWORD(8L));
+    ImmReleaseContext(hWND, hIMC);
+  }
+
+  public static void disableIME() {
+    ImmAssociateContext(getHWND(), null);
   }
 
 }
